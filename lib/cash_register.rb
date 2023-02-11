@@ -1,15 +1,18 @@
 require 'pry'
 class CashRegister
-    attr_accessor :total, :quantity 
-    attr_reader :discount, :price, :title
+    attr_accessor :total, :quantity, :items, :price
+    attr_reader :discount, :title
 
     def initialize(discount=0, total = 0)
-        @total=total
+        @total = total
         @discount=discount
+        @items = Array.new
     end
 
     def add_item(title, price, quantity=1)
-        self.total =self.total + price * quantity
+        @price =price * quantity
+        1.upto(quantity) { |i| @items << title}
+        self.total =self.total + self.price
     end
 
     def apply_discount
@@ -21,18 +24,14 @@ class CashRegister
             "There is no discount to apply."
         end
     end
+
     def items
-        self.add_item
-        binding.pry
-        array= []
-        # if item3 == 0
-        #     array << item1
-        #     array << item2
-        # else
-        #     array << item1
-        #     array << item2
-        #     array << item3
-        # end
+        @items
     end
+
+    def void_last_transaction
+            self.total = self.total - self.price
+    end
+
 end
 binding.pry
